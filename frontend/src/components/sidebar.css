@@ -1,0 +1,62 @@
+/* 🔥 SIDEBAR CONTAINER */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 🔥 TITLE */
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #e2e8f0;
+}
+
+/* 🔥 BUTTON BASE */
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #cbd5f5;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 14px;
+}
+
+/* 🔥 HOVER EFFECT */
+.sidebar-btn:hover {
+  background: rgba(19, 29, 44, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #ffffff;
+  transform: translateX(5px);
+}
+
+/* 🔥 ACTIVE BUTTON */
+.sidebar-btn.active {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+  border: none;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
+}
+
+/* 🔥 ICON */
+.sidebar-icon {
+  font-size: 16px;
+}
+
+/* 🔥 TEXT */
+.sidebar-text {
+  flex: 1;
+  font-size: 1rem;
+}

@@ -1,0 +1,193 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+/* 🔥 DASHBOARD GRID */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* 🔥 CARD DESIGN */
+.metric-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.metric-card h4 {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.metric-card h2 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+
+
+/* ---------- */
+
+/* .card {
+  background: rgba(255,255,255,0.05);
+  padding: 16px 20px;
+  border-radius: 16px;
+  min-width: 150px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+  justify-content: center;
+  align-items: center;
+} */
+
+.card{
+    padding: 20px;
+    background: rgb(2, 6, 23);
+    border-left: 4px solid rgb(34, 197, 94);
+    border-radius: 10px;
+    min-width: 250px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #1e293b;
+  color: white;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+.btn.danger {
+  background: #ef4444;
+}
+
+.tab {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2563eb;
+}
+
+.path {
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.loader {
+  padding: 10px;
+  color: #60a5fa;
+}
+
+
+
+/* 🔥 TABLE CONTAINER */
+.table-container {
+  margin-top: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+}
+
+/* 🔥 TABLE */
+.pro-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 🔥 HEADER */
+.pro-table thead {
+  position: sticky;
+  top: 0;
+  background: #0f172a;
+  z-index: 10;
+}
+
+.pro-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* 🔥 ROW */
+.pro-table td {
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* 🔥 STRIPES */
+.pro-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+/* 🔥 HOVER EFFECT */
+.pro-table tbody tr:hover {
+  background: rgba(37,99,235,0.15);
+  transition: 0.2s;
+}
+
+/* 🔥 CHECKBOX */
+input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* 🔥 PATH */
+.path {
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 🔥 BUTTONS */
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  color: #fff;
+}
+
+.icon-btn:hover {
+  transform: scale(1.2);
+}
+
+.icon-btn.danger {
+  color: #ef4444;
+}

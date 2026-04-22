@@ -5,7 +5,8 @@ import { FaDesktop, FaShieldAlt, FaBroom, FaRobot } from "react-icons/fa";
 const Sidebar = ({ setPage, page }) => {
   return (
     <div className="sidebar">
-      <h2 className="sidebar-title">⚙️ Controls</h2>
+      <img src="logo.png" alt="logo.png" className="logo"/>
+      {/* <h2 className="sidebar-title">⚙️ Controls</h2> */}
 
       <button
         className={`sidebar-btn ${page === "system" ? "active" : ""}`}

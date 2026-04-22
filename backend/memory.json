@@ -7,44 +7,44 @@
   ],
   "chat": [
     {
-      "user": "Warning! RAM usage is 75.1 percent",
-      "jarvis": "groq: Got it\u2014RAM\u2019s a bit high. Free up some unused apps or consider a quick restart if you\u2019re feeling sluggish. Let me know if you need help with that."
+      "user": "event",
+      "jarvis": "groq: An event is a notable occurrence or happening, often scheduled or significant in some context."
     },
     {
-      "user": "Warning! RAM usage is 75.4 percent",
-      "jarvis": "groq: Got it. Monitoring RAM usage."
-    },
-    {
-      "user": "My RAM usage is 75.9 percent. Give short tips to reduce memory usage.",
-      "jarvis": "gemini: Understood. I\u2019d recommend closing any unused browser tabs and background applications. A quick restart wouldn't hurt either, if you have the time."
+      "user": "jarvis",
+      "jarvis": "groq: Hey! What can I help you with today?"
     },
     {
       "user": "hello jarvis",
-      "jarvis": "groq: Hey there! How can I help you today?"
+      "jarvis": "groq: Hello! How can I help you today?"
     },
     {
-      "user": "any warning for me",
-      "jarvis": "groq: Just a heads\u2011up: keep your personal info private and be wary of suspicious links or emails."
+      "user": "what is my battery percentage",
+      "jarvis": "groq: Your battery is at 21%."
     },
     {
-      "user": "let me warning for",
-      "jarvis": "groq: Sure! What would you like a warning about?"
+      "user": "hello galleries",
+      "jarvis": "rule: CPU 13.8%, RAM 78.9%, Battery 20%"
     },
     {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hey! How can I help you today?"
+      "user": "hello jerry reese",
+      "jarvis": "rule: CPU 19.8%, RAM 78.9%, Battery 19%"
     },
     {
-      "user": "system",
-      "jarvis": "groq: CPU: 20\u202f%, RAM: 71.5\u202f%, Battery: 47\u202f%."
+      "user": "had i got a result",
+      "jarvis": "groq: Could you clarify which result you\u2019re referring to?"
     },
     {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hey there! How can I help you today?"
+      "user": "hello database",
+      "jarvis": "ollama: Hello! How can I help you with the database today?"
     },
     {
-      "user": "aapse aapke",
-      "jarvis": "groq: It looks like a mix of Hindi words: \u201caapse\u201d means \u201cfrom you\u201d or \u201cto you,\u201d and \u201caapke\u201d means \u201cyour.\u201d"
+      "user": "tell me about my system",
+      "jarvis": "ollama: Your system currently has a CPU usage of 7.6%, RAM usage of 81.5%, and battery level at 22%. This means your device is not under heavy load, but the battery may be running low."
+    },
+    {
+      "user": "tell about my system",
+      "jarvis": "ollama: Your system currently has a CPU usage of 7.8%, RAM usage of 82.6%, and the battery level is at 22%. This suggests that your system is relatively idle, with some applications or processes running but not heavily consuming resources. The battery level means it's advisable to plug in your device soon if you plan to continue using it extensively."
     }
   ]
 }

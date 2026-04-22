@@ -51,9 +51,9 @@ const SystemPage = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1>
+      {/* <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1> */}
 
-      <h2>💻 System Performance Monitor</h2>
+      <h1>💻 System Performance Monitor</h1>
 
       {/* 🔥 METRICS */}
       <div className="dashboard">

@@ -117,6 +117,7 @@ const AIPage = () => {
 
     try {
       const res = await sendMessage(messageText);
+      console.log("res:", res);
 
       // const aiText = res?.response || "No response from AI";
       const aiText =

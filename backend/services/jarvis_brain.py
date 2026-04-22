@@ -92,7 +92,7 @@ Answer naturally and briefly.
             source = "gemini"
 
     if not res:
-        res = run_with_timeout(ollama_response, (prompt,), 10)
+        res = run_with_timeout(ollama_response, (prompt,), 20)
         if res:
             source = "ollama"
 

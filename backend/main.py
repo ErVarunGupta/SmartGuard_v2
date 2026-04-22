@@ -100,6 +100,7 @@ async def ai_chat(request: Request):
     query = body.get("message", "")
 
     response = jarvis_brain(query)
+    # print("response: ", response)
 
     # 🔥 IMPORTANT: always return JSON
     if not response:
@@ -115,6 +116,8 @@ async def ai_chat(request: Request):
     else:
         source, text = "unknown", response
 
+    # print("res text: ", text)
+    # print("res source: ", source)
     return {
         "response": text.strip(),
         "source": source.strip(),

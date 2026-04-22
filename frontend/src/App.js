@@ -9,10 +9,10 @@ function App() {
   const [page, setPage] = useState("system");
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display : "flex" }}>
       <Sidebar setPage={setPage} page={page} />
 
-      <div style={{ flex: 1, padding: "20px" }}>
+      <div style={dashboard}>
         {page === "system" && <SystemPage />}
         {page === "ai" && <AIPage />}
         {page === "ids" && <IDSPage />}
@@ -20,6 +20,13 @@ function App() {
       </div>
     </div>
   );
+}
+
+
+const dashboard  = {
+  flex: 1, 
+  padding: "20px",
+  marginLeft: "15rem"
 }
 
 export default App;

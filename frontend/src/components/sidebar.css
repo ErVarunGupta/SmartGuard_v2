@@ -9,6 +9,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: fixed;
+  align-items: center;
 }
 
 /* 🔥 TITLE */
@@ -59,4 +61,14 @@
 .sidebar-text {
   flex: 1;
   font-size: 1rem;
+}
+
+.sidebar-btn{
+  width: 100%;
+}
+
+.logo{
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
 }

@@ -4,7 +4,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 const safeFetch = async (url, options = {}) => {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000); // 5 sec timeout
+    const timeout = setTimeout(() => controller.abort(), 20000); // 20 sec timeout
 
     const res = await fetch(url, {
       ...options,

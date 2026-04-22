@@ -7,14 +7,6 @@
   ],
   "chat": [
     {
-      "user": "Warning! RAM usage is 76.5 percent",
-      "jarvis": "groq: Got it\u2014I'll keep an eye on it. Let me know if you need anything else."
-    },
-    {
-      "user": "Warning! RAM usage is 75.5 percent",
-      "jarvis": "groq: Got it\u2014RAM\u2019s running high. Let me know if you need help freeing up some memory."
-    },
-    {
       "user": "Warning! RAM usage is 75.1 percent",
       "jarvis": "groq: Got it\u2014RAM\u2019s a bit high. Free up some unused apps or consider a quick restart if you\u2019re feeling sluggish. Let me know if you need help with that."
     },
@@ -45,6 +37,14 @@
     {
       "user": "system",
       "jarvis": "groq: CPU: 20\u202f%, RAM: 71.5\u202f%, Battery: 47\u202f%."
+    },
+    {
+      "user": "hello jarvis",
+      "jarvis": "groq: Hey there! How can I help you today?"
+    },
+    {
+      "user": "aapse aapke",
+      "jarvis": "groq: It looks like a mix of Hindi words: \u201caapse\u201d means \u201cfrom you\u201d or \u201cto you,\u201d and \u201caapke\u201d means \u201cyour.\u201d"
     }
   ]
 }

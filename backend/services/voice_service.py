@@ -5,13 +5,35 @@ import speech_recognition as sr
 import pyttsx3
 import time
 import threading
-import queue
 
 from services.jarvis_brain import jarvis_brain
 
 SAMPLE_RATE = 48000
 DURATION = 3
 sd.default.device = None
+
+
+engine = None
+engine_lock = threading.Lock()
+
+# def init_engine():
+#     global engine
+#     if engine is None:
+#         engine = pyttsx3.init()
+#         engine.setProperty('rate', 170)
+
+# def speak(text: str):
+#     def run():
+#         global engine
+#         with engine_lock:
+#             try:
+#                 init_engine()
+#                 engine.say(text)
+#                 engine.runAndWait()
+#             except Exception as e:
+#                 print("TTS Error:", e)
+
+#     threading.Thread(target=run, daemon=True).start()
 
 
 # =========================

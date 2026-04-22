@@ -118,7 +118,11 @@ const AIPage = () => {
     try {
       const res = await sendMessage(messageText);
 
-      const aiText = res?.response || "No response from AI";
+      // const aiText = res?.response || "No response from AI";
+      const aiText =
+        res?.status === "success"
+          ? res.response
+          : "AI not available right now";
 
       const aiMsg = { role: "ai", text: aiText };
       setMessages((prev) => [...prev, aiMsg]);

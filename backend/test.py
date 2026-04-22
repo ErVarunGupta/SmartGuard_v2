@@ -1,4 +1,3 @@
-import pyttsx3
-engine = pyttsx3.init()
-engine.say("test voice")
-engine.runAndWait()
+from services.voice_service import speak
+
+speak("Hello Varun, system is ready")

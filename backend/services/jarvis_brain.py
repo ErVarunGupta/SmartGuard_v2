@@ -3,6 +3,8 @@ from services.ai_service import groq_response, gemini_response, ollama_response
 from services.system_service import get_system_metrics
 from services.memory_service import add_chat, add_fact, get_fact
 
+from services.action_engine import handle_action
+
 
 def run_with_timeout(func, args=(), timeout=5):
     result = [None]
@@ -25,6 +27,13 @@ def is_system_query(q):
 
 def jarvis_brain(query):
     q = query.lower()
+
+    # =========================
+    # ACTION ENGINE (NEW)
+    # =========================
+    action = handle_action(query)
+    if action:
+        return action
 
     # MEMORY LEARNING
     if "my name is" in q:
@@ -99,3 +108,6 @@ Answer naturally and briefly.
     add_chat(query, final)
 
     return final
+
+
+

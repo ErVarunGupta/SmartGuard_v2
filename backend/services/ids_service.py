@@ -5,6 +5,7 @@ import threading
 import subprocess
 import psutil
 import time
+from services.voice_service import speak 
 
 # =========================
 # LOAD MODEL
@@ -22,6 +23,7 @@ FEATURE_NAMES = list(scaler.feature_names_in_)
 # =========================
 # GLOBAL STATE
 # =========================
+last_attack_alert = {}
 logs = []
 blocked_ips = set()
 
@@ -34,10 +36,10 @@ ip_set = set()
 
 # 🔥 NEW TRACKING
 ip_request_count = {}
-ip_syn_count = {}      # ✅ SYN counter
+ip_syn_count = {}      
 ip_last_reset = {}
 
-WINDOW = 5  # seconds
+WINDOW = 5  
 
 # =========================
 # ML PREDICTION
@@ -191,8 +193,18 @@ def process_packet(packet):
         # =========================
         # ACTION
         # =========================
+        current_time = time.time()
         if final_attack:
             block_ip(ip)
+
+            # prevent spam (per IP)
+            if ip not in last_attack_alert or current_time - last_attack_alert[ip] > 20:
+                alert_msg = f"Warning! {attack_type} attack detected from IP {ip}. It has been blocked."
+
+                print("🚨 ALERT:", alert_msg)
+                speak(alert_msg)
+
+                last_attack_alert[ip] = current_time
 
         # =========================
         # LOGGING

@@ -19,6 +19,7 @@ from services.cleaner_engine import (
     SCAN_PATHS
 )
 from services.voice_service import start_jarvis
+from services.monitor_service import background_monitor
 
 app = FastAPI()
 
@@ -42,11 +43,14 @@ app.add_middleware(
 def startup_event():
     print("🚀 Backend started")
 
-    # 🔥 Start Jarvis safely (only once)
+    # 🔥 Start Jarvis
     threading.Thread(target=start_jarvis, daemon=True).start()
 
-    # 🔥 Start IDS
-    run_ids()
+    # 🔥 Start IDS (MAKE IT THREAD)
+    threading.Thread(target=run_ids, daemon=True).start()
+
+    # 🔥 Start CPU Monitor (NEW)
+    threading.Thread(target=background_monitor, daemon=True).start()
 
 
 # =========================
@@ -82,13 +86,40 @@ def kill_process(pid: int):
 # =========================
 # AI CHAT
 # =========================
+# @app.post("/ai-chat")
+# async def ai_chat(request: Request):
+#     body = await request.json()
+#     query = body.get("message", "")
+#     response = jarvis_brain(query)
+#     print(response)
+#     return {"response": response}
+
 @app.post("/ai-chat")
 async def ai_chat(request: Request):
     body = await request.json()
     query = body.get("message", "")
+
     response = jarvis_brain(query)
-    print(response)
-    return {"response": response}
+
+    # 🔥 IMPORTANT: always return JSON
+    if not response:
+        return {
+            "response": "Sorry, AI is not available right now",
+            "source": "none",
+            "status": "error"
+        }
+
+    # 🔥 FIX: clean response (remove prefix)
+    if ":" in response:
+        source, text = response.split(":", 1)
+    else:
+        source, text = "unknown", response
+
+    return {
+        "response": text.strip(),
+        "source": source.strip(),
+        "status": "success"
+    }
 
 # =========================
 # IDS APIs

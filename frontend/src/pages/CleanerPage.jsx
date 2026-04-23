@@ -17,7 +17,7 @@ const CleanerPage = () => {
     setProgress(0);
 
     const response = await fetch(
-      `http://127.0.0.1:8000/cleaner-stream?mode=${scanMode}`
+      `http://127.0.0.1:8000/cleaner-stream?mode=${scanMode}`,
     );
 
     const reader = response.body.getReader();
@@ -57,9 +57,7 @@ const CleanerPage = () => {
   // SELECT
   const toggleSelect = (path) => {
     setSelected((prev) =>
-      prev.includes(path)
-        ? prev.filter((p) => p !== path)
-        : [...prev, path]
+      prev.includes(path) ? prev.filter((p) => p !== path) : [...prev, path],
     );
   };
 
@@ -77,14 +75,12 @@ const CleanerPage = () => {
     try {
       const res = await axios.post(
         "http://127.0.0.1:8000/cleaner-delete",
-        selected
+        selected,
       );
 
       alert(`Deleted: ${res.data.deleted.length}`);
 
-      setFiles((prev) =>
-        prev.filter((f) => !selected.includes(f.path))
-      );
+      setFiles((prev) => prev.filter((f) => !selected.includes(f.path)));
 
       setSelected([]);
     } catch {
@@ -101,64 +97,68 @@ const CleanerPage = () => {
 
   // COUNTS
   const totalCount = files.length;
-  const tempCount = files.filter(f => f.category === "TEMP").length;
-  const importantCount = files.filter(f => f.category === "IMPORTANT").length;
+  const tempCount = files.filter((f) => f.category === "TEMP").length;
+  const importantCount = files.filter((f) => f.category === "IMPORTANT").length;
 
   return (
-    <div style={{ padding: 30, color: "white" }}>
+    <div style={{ padding: "0px 30px", color: "white" }}>
       <h1>🧹 Smart AI File Cleaner</h1>
 
-      
-<div style={{display: "flex", gap:"1rem"}}>
-      {/* 🔥 CARDS */}
-      <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
-        <Card title="All Files" value={totalCount} />
-        <Card title="Temp Files" value={tempCount} />
-        <Card title="Important Files" value={importantCount} />
-      </div>
-<div style={{display: "block", gap:"1rem"}}>
-      {/* 🔥 MODE BUTTONS */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        {["ALL", "TEMP", "IMPORTANT"].map((mode) => (
-          <button
-            key={mode}
-            className={`tab ${scanMode === mode ? "active" : ""}`}
-            onClick={() => setScanMode(mode)}
-          >
-            {mode}
-          </button>
-        ))}
-      </div>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        {/* 🔥 CARDS */}
+        <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+          <Card title="All Files" value={totalCount} />
+          <Card title="Temp Files" value={tempCount} />
+          <Card title="Important Files" value={importantCount} />
+        </div>
+        <div style={{ display: "block", gap: "1rem" }}>
+          {/* 🔥 MODE BUTTONS */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+            {["ALL", "TEMP", "IMPORTANT"].map((mode) => (
+              <button
+                key={mode}
+                className={`tab ${scanMode === mode ? "active" : ""}`}
+                onClick={() => setScanMode(mode)}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
 
-      {/* 🔥 ACTIONS */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        <button className="btn primary" onClick={scanFiles}>
-          🔍 Scan
-        </button>
+          {/* 🔥 ACTIONS */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+            <button className="btn primary" onClick={scanFiles}>
+              🔍 Scan
+            </button>
 
-        <button className="btn" onClick={selectAll}>
-          ☑ Select All
-        </button>
+            <button className="btn" onClick={selectAll}>
+              ☑ Select All
+            </button>
 
-        <button className="btn danger" onClick={deleteSelected}>
-          🗑 Delete ({selected.length})
-        </button>
+            <button className="btn danger" onClick={deleteSelected}>
+              🗑 Delete ({selected.length})
+            </button>
+          </div>
+        </div>
       </div>
-</div></div>
 
       {/* 🔥 PROGRESS */}
       {loading && (
         <>
-          <div style={{
-            height: "6px",
-            background: "#1e293b",
-            borderRadius: "10px"
-          }}>
-            <div style={{
-              width: `${progress}%`,
-              height: "100%",
-              background: "#2563eb"
-            }} />
+          <div
+            style={{
+              height: "6px",
+              background: "#1e293b",
+              borderRadius: "10px",
+            }}
+          >
+            <div
+              style={{
+                width: `${progress}%`,
+                height: "100%",
+                background: "#2563eb",
+              }}
+            />
           </div>
 
           <p>Scanning {Math.floor(progress)}%</p>
@@ -169,7 +169,9 @@ const CleanerPage = () => {
       <table className="pro-table">
         <thead>
           <tr>
-            <th><input type="checkbox" onChange={selectAll} /></th>
+            <th>
+              <input type="checkbox" onChange={selectAll} />
+            </th>
             <th>Path</th>
             <th>Size</th>
             <th>Age</th>
@@ -197,7 +199,10 @@ const CleanerPage = () => {
               <td>{file.confidence}%</td>
 
               <td>
-                <button className="icon-btn" onClick={() => openFileLocation(file.path)}>
+                <button
+                  className="icon-btn"
+                  onClick={() => openFileLocation(file.path)}
+                >
                   📂
                 </button>
               </td>
@@ -207,7 +212,7 @@ const CleanerPage = () => {
       </table>
 
       {visibleCount < files.length && (
-        <button onClick={() => setVisibleCount(prev => prev + 500)}>
+        <button onClick={() => setVisibleCount((prev) => prev + 500)}>
           Load More
         </button>
       )}
@@ -221,7 +226,5 @@ const Card = ({ title, value }) => (
     <h2>{value}</h2>
   </div>
 );
-
-
 
 export default CleanerPage;

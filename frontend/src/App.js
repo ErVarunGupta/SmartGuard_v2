@@ -25,7 +25,7 @@ function App() {
 
 const dashboard  = {
   flex: 1, 
-  padding: "20px",
+  padding: "0px 20px",
   marginLeft: "15rem"
 }
 

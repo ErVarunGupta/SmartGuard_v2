@@ -9,7 +9,11 @@ const AIPage = () => {
   const [isVoiceInput, setIsVoiceInput] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [voiceText, setVoiceText] = useState("");
-  const [tempText, setTempText] = useState(""); // 🔥 new
+  const [tempText, setTempText] = useState("");
+
+  const formatText = (text) => {
+    return text.replace(/\. /g, ".\n\n").replace(/:\s/g, ":\n").trim();
+  };
 
   const chatRef = useRef();
 
@@ -104,6 +108,42 @@ const AIPage = () => {
     window.speechSynthesis.speak(speech);
   };
 
+  // for better ui
+  const typeMessage = async (fullText) => {
+    const formatted = formatText(fullText);
+
+    let current = "";
+
+    // add empty AI message first
+    setMessages((prev) => [...prev, { role: "ai", text: "", typing: true }]);
+
+    for (let i = 0; i < formatted.length; i++) {
+      current += formatted[i];
+
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: "ai",
+          text: current + "▌", // blinking cursor feel
+          typing: true,
+        };
+        return updated;
+      });
+
+      await new Promise((res) => setTimeout(res, 8)); // speed control
+    }
+
+    // remove cursor at end
+    setMessages((prev) => {
+      const updated = [...prev];
+      updated[updated.length - 1] = {
+        role: "ai",
+        text: formatted,
+      };
+      return updated;
+    });
+  };
+
   // 💬 Send Message
   const handleSend = async (voice = false, customInput = null) => {
     const messageText = customInput || input;
@@ -121,13 +161,9 @@ const AIPage = () => {
 
       // const aiText = res?.response || "No response from AI";
       const aiText =
-        res?.status === "success"
-          ? res.response
-          : "AI not available right now";
+        res?.status === "success" ? res.response : "AI not available right now";
 
-      const aiMsg = { role: "ai", text: aiText };
-      setMessages((prev) => [...prev, aiMsg]);
-
+      await typeMessage(aiText);
       // 🔊 Speak only for voice
       if (voice) {
         speak(aiText);
@@ -144,12 +180,12 @@ const AIPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "98vh" }}>
       {/* <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1> */}
       {/* HEADER */}
       <div
         style={{
-          padding: "20px",
+          padding: "10px 20px",
           fontSize: "30px",
           fontWeight: "bold",
           borderBottom: "1px solid #1f2937",
@@ -158,7 +194,6 @@ const AIPage = () => {
         🤖 Smart AI Assistant
       </div>
 
-      {/* CHAT AREA */}
       <div
         ref={chatRef}
         style={{
@@ -168,44 +203,62 @@ const AIPage = () => {
           background: "#020617",
         }}
       >
-        {messages.map((msg, i) => (
+        {messages.length === 0 ? (
+          // ================= EMPTY STATE =================
           <div
-            key={i}
             style={{
+              height: "100%",
               display: "flex",
-              justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-              marginBottom: "14px",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#9ca3af",
+              fontSize: "26px",
+              fontWeight: "500",
             }}
           >
+            Ready when you are.
+          </div>
+        ) : (
+          // ================= CHAT =================
+          messages.map((msg, i) => (
             <div
+              key={i}
               style={{
-                maxWidth: "60%",
-                padding: "14px 18px",
-                borderRadius: "18px",
-                background:
-                  msg.role === "user"
-                    ? "linear-gradient(135deg, #2563eb, #1d4ed8)"
-                    : "#0f172a",
-                border: msg.role === "ai" ? "1px solid #1e293b" : "none",
-                color: "white",
-                fontSize: "18px",
-                lineHeight: "2",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                display: "flex",
+                justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
+                marginBottom: "14px",
               }}
             >
-              {msg.text.split("\n").map((line, index) => {
-                if (line.toLowerCase().includes("problem"))
-                  return <b key={index}>🚨 {line}</b>;
-                if (line.toLowerCase().includes("analysis"))
-                  return <b key={index}>📊 {line}</b>;
-                if (line.toLowerCase().includes("solution"))
-                  return <b key={index}>🛠️ {line}</b>;
+              <div
+                style={{
+                  maxWidth: "60%",
+                  padding: "14px 18px",
+                  borderRadius: "18px",
+                  background:
+                    msg.role === "user"
+                      ? "linear-gradient(135deg, #2563eb, #1d4ed8)"
+                      : "#0f172a",
+                  border: msg.role === "ai" ? "1px solid #1e293b" : "none",
+                  color: "white",
+                  fontSize: "18px",
+                  lineHeight: "2",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                }}
+              >
+                {msg.text.split("\n").map((line, index) => {
+                  if (line.toLowerCase().includes("problem"))
+                    return <b key={index}>🚨 {line}</b>;
+                  if (line.toLowerCase().includes("analysis"))
+                    return <b key={index}>📊 {line}</b>;
+                  if (line.toLowerCase().includes("solution"))
+                    return <b key={index}>🛠️ {line}</b>;
 
-                return <div key={index}>{line}</div>;
-              })}
+                  return <div key={index}>{line}</div>;
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
 
         {/* 🤖 Thinking */}
         {thinking && (
@@ -275,6 +328,13 @@ const AIPage = () => {
       </div>
     </div>
   );
+};
+
+const chat_placeholder = {
+  width: "100%",
+  marginTop: "15%",
+  opacity: "0.8",
+  textAlign: "center",
 };
 
 export default AIPage;

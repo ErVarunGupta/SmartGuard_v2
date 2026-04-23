@@ -128,6 +128,7 @@ def listen():
         if text:
             return text
 
+        time.sleep(1.5)
         print("⚠️ Fallback to offline")
         return listen_offline()
     else:

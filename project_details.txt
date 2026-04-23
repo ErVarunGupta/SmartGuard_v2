@@ -3,6 +3,16 @@
 
 📁 Folder: .
 
+📄 File: .gitignore
+node_modules/
+dist/
+backend/build/
+dist/
+*.pkg
+*.pyz
+*.exe
+__pycache__/
+
 📄 File: electron.js
 const { app, BrowserWindow, dialog } = require("electron");
 const path = require("path");
@@ -219,7 +229,7 @@ OUTPUT_FILE = "project_details.txt"
 ROOT_DIR = "."  # current project folder
 
 EXCLUDE_FOLDERS = ["venv", "__pycache__", "node_modules", ".git"]
-EXCLUDE_EXT = [".png", ".jpg", ".jpeg", ".gif", ".exe", ".dll"]
+EXCLUDE_EXT = [".png", ".jpg", ".jpeg", ".gif", ".exe", ".dll", ".env"]
 
 
 def is_excluded(path):
@@ -292,6 +302,16 @@ npx electron .
 📄 File: .gitignore
 /.env
 venv
+build
+dist
+backend/build/
+dist/
+*.pkg
+*.pyz
+*.exe
+__pycache__/
+models/vosk-model-small-en-us-0.15
+
 
 📄 File: generate_dataset.py
 import psutil
@@ -357,6 +377,7 @@ from services.cleaner_engine import (
     SCAN_PATHS
 )
 from services.voice_service import start_jarvis
+from services.monitor_service import background_monitor
 
 app = FastAPI()
 
@@ -380,11 +401,14 @@ app.add_middleware(
 def startup_event():
     print("🚀 Backend started")
 
-    # 🔥 Start Jarvis safely (only once)
+    # 🔥 Start Jarvis
     threading.Thread(target=start_jarvis, daemon=True).start()
 
-    # 🔥 Start IDS
-    run_ids()
+    # 🔥 Start IDS (MAKE IT THREAD)
+    threading.Thread(target=run_ids, daemon=True).start()
+
+    # 🔥 Start CPU Monitor (NEW)
+    threading.Thread(target=background_monitor, daemon=True).start()
 
 
 # =========================
@@ -414,15 +438,7 @@ def kill_process(pid: int):
         process = psutil.Process(pid)
         process.terminate()
         return {"status": "success", "message": f"Process {pid} terminated"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-
-# =========================
-# AI CHAT
-# =========================
-@app.post("/ai-chat")
-async def ai_chat(request: Request):
-    body
+    except Exce
 ... (truncated)
 
 
@@ -469,49 +485,55 @@ exe = EXE(
 
 📄 File: memory.json
 {
-  "facts": [],
+  "facts": [
+    {
+      "key": "name",
+      "value": "varun"
+    }
+  ],
   "chat": [
     {
+      "user": "huh",
+      "jarvis": "groq: Sure thing."
+    },
+    {
+      "user": "hello",
+      "jarvis": "groq: Hey! How can I help you today?"
+    },
+    {
+      "user": "what can i do",
+      "jarvis": "groq: Sure! Ask me anything\u2014whether it\u2019s a quick fact, help with a task, or just a chat. I\u2019m here to make things easier."
+    },
+    {
+      "user": "opened up grow",
+      "jarvis": "groq: Could you clarify what you mean by \u201copened up grow\u201d?"
+    },
+    {
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
+    },
+    {
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
+    },
+    {
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
+    },
+    {
       "user": "hello",
       "jarvis": "groq: Hey there! How can I help you today?"
     },
     {
-      "user": "hello Jarvis",
-      "jarvis": "groq: Hey there! How can I help you today?"
+      "user": "oh",
+      "jarvis": "groq: Gotcha."
     },
     {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hi there! How can I help you today?"
-    },
-    {
-      "user": "hello",
-      "jarvis": "ollama: Hello! How can I assist you today?"
-    },
-    {
-      "user": "1398",
-      "jarvis": "groq: 1398."
-    },
-    {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hey there! How can I help you today?"
-    },
-    {
-      "user": "how can i implement the",
-      "jarvis": "groq: Could you let me know what you\u2019re trying to implement? That way I can give you a quick, relevant answer."
-    },
-    {
-      "user": "hello",
-      "jarvis": "groq: Hey there! How can I help you today?"
-    },
-    {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hey there! How can I help you today?"
-    },
-    {
-      "user": "implement the ulama ap",
-      "jarvis": "groq: Sure thing! Here\u2019s a quick, minimal \u201cUlama\u201d app skeleton you can start with:\n\n---\n\n### 1\ufe0f\u20e3 Tech stack  \n- **Frontend**: React (or Flutter if you prefer mobile)  \n- **Backend**: Node.js + Express  \n- **Database**: MongoDB (or any DB you\u2019re comfortable with)  \n- **Auth**: JWT + Passport\n\n---\n\n### 2\ufe0f\u20e3 Folder structure  \n\n```\nulama-app/\n\u251c\u2500 backend/\n\u2502  \u251c\u2500 routes/\n\u2502  \u2502  \u2514\u2500 ulama.js\n\u2502  \u251c\u2500 models/\n\u2502  \u2502  \u2514\u2500 Ulama.js\n\u2502  \u251c\u2500 controllers/\n\u2502  \u2502  \u2514\u2500 ulamaController.js\n\u2502  \u251c\u2500 app.js\n\u2502  \u2514\u2500 package.json\n\u2514\u2500 frontend/\n   \u251c\u2500 src/\n   \u2502  \u251c\u2500 components/\n   \u2502  \u2502  \u251c\u2500 UlamaList.jsx\n   \u2502  \u2502  \u2514\u2500 UlamaForm.jsx\n   \u2502  \u251c\u2500 api/\n   \u2502  \u2502  \u2514\u2500 ulam
-... (truncated)
-
+      "user": "open d chrome",
+      "jarvis": "groq: Opening Chrome now."
+    }
+  ]
+}
 
 📄 File: requirements.txt
 [Could not read file: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte]
@@ -520,10 +542,9 @@ exe = EXE(
 [Could not read file: 'utf-8' codec can't decode byte 0x80 in position 24: invalid start byte]
 
 📄 File: test.py
-import pyttsx3
-engine = pyttsx3.init()
-engine.say("test voice")
-engine.runAndWait()
+from services.voice_service import speak
+
+speak("Hello Varun, system is ready")
 
 📄 File: train_ids_model.py
 import pandas as pd
@@ -1642,7 +1663,328 @@ model.fit(X, y)
 
 joblib.dump(model, "models/system_model.pkl")
 
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15
+
+📄 File: README
+US English model for mobile Vosk applications
+
+Copyright 2020 Alpha Cephei Inc
+
+Accuracy: 10.38 (tedlium test) 9.85 (librispeech test-clean)
+Speed: 0.11xRT (desktop)
+Latency: 0.15s (right context)
+
+
+
+
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15\am
+
+📄 File: final.mdl
+[Could not read file: 'utf-8' codec can't decode byte 0xa6 in position 32: invalid start byte]
+
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15\conf
+
+📄 File: mfcc.conf
+--sample-frequency=16000
+--use-energy=false
+--num-mel-bins=40
+--num-ceps=40
+--low-freq=20
+--high-freq=7600
+--allow-downsample=true
+
+
+📄 File: model.conf
+--min-active=200
+--max-active=3000
+--beam=10.0
+--lattice-beam=2.0
+--acoustic-scale=1.0
+--frame-subsampling-factor=3
+--endpoint.silence-phones=1:2:3:4:5:6:7:8:9:10
+--endpoint.rule2.min-trailing-silence=0.5
+--endpoint.rule3.min-trailing-silence=0.75
+--endpoint.rule4.min-trailing-silence=1.0
+
+
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15\graph
+
+📄 File: disambig_tid.int
+10015
+10016
+10017
+10018
+10019
+10020
+10021
+10022
+10023
+10024
+10025
+10026
+10027
+10028
+10029
+10030
+10031
+
+
+📄 File: Gr.fst
+[Could not read file: 'utf-8' codec can't decode byte 0xd6 in position 0: invalid continuation byte]
+
+📄 File: HCLr.fst
+[Could not read file: 'utf-8' codec can't decode byte 0xd6 in position 0: invalid continuation byte]
+
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15\graph\phones
+
+📄 File: word_boundary.int
+1 nonword
+2 begin
+3 end
+4 internal
+5 singleton
+6 nonword
+7 begin
+8 end
+9 internal
+10 singleton
+11 begin
+12 end
+13 internal
+14 singleton
+15 begin
+16 end
+17 internal
+18 singleton
+19 begin
+20 end
+21 internal
+22 singleton
+23 begin
+24 end
+25 internal
+26 singleton
+27 begin
+28 end
+29 internal
+30 singleton
+31 begin
+32 end
+33 internal
+34 singleton
+35 begin
+36 end
+37 internal
+38 singleton
+39 begin
+40 end
+41 internal
+42 singleton
+43 begin
+44 end
+45 internal
+46 singleton
+47 begin
+48 end
+49 internal
+50 singleton
+51 begin
+52 end
+53 internal
+54 singleton
+55 begin
+56 end
+57 internal
+58 singleton
+59 begin
+60 end
+61 internal
+62 singleton
+63 begin
+64 end
+65 internal
+66 singleton
+67 begin
+68 end
+69 internal
+70 singleton
+71 begin
+72 end
+73 internal
+74 singleton
+75 begin
+76 end
+77 internal
+78 singleton
+79 begin
+80 end
+81 internal
+82 singleton
+83 begin
+84 end
+85 internal
+86 singleton
+87 begin
+88 end
+89 internal
+90 singleton
+91 begin
+92 end
+93 internal
+94 singleton
+95 begin
+96 end
+97 internal
+98 singleton
+99 begin
+100 end
+101 internal
+102 singleton
+103 begin
+104 end
+105 internal
+106 singleton
+107 begin
+108 end
+109 internal
+110 singleton
+111 begin
+112 end
+113 internal
+114 singleton
+115 begin
+116 end
+117 internal
+118 singleton
+119 begin
+120 end
+121 internal
+122 singleton
+123 begin
+124 end
+125 internal
+126 singleton
+127 begin
+128 end
+129 internal
+130 singleton
+131 begin
+132 end
+133 internal
+134 singleton
+135 begin
+136 end
+137 internal
+138 singleton
+139 begin
+140 end
+141 internal
+142 singleton
+143 begin
+144 end
+145 internal
+146 singleton
+147 begin
+148 end
+149 internal
+150 singleton
+151 begin
+152 end
+153 internal
+154 singleton
+155 begin
+156 end
+157 internal
+158 singleton
+159 begin
+160 end
+161 internal
+162 singleton
+163 begin
+164 end
+165 internal
+166 singleton
+
+
+📁 Folder: .\backend\models\vosk-model-small-en-us-0.15\ivector
+
+📄 File: final.dubm
+[Could not read file: 'utf-8' codec can't decode byte 0xc0 in position 30: invalid start byte]
+
+📄 File: final.ie
+[Could not read file: 'utf-8' codec can't decode byte 0xc0 in position 57: invalid start byte]
+
+📄 File: final.mat
+[Could not read file: 'utf-8' codec can't decode byte 0x90 in position 15: invalid start byte]
+
+📄 File: global_cmvn.stats
+ [
+  1.682383e+11 -1.1595e+10 -1.521733e+10 4.32034e+09 -2.257938e+10 -1.969666e+10 -2.559265e+10 -1.535687e+10 -1.276854e+10 -4.494483e+09 -1.209085e+10 -5.64008e+09 -1.134847e+10 -3.419512e+09 -1.079542e+10 -4.145463e+09 -6.637486e+09 -1.11318e+09 -3.479773e+09 -1.245932e+08 -1.386961e+09 6.560655e+07 -2.436518e+08 -4.032432e+07 4.620046e+08 -7.714964e+07 9.551484e+08 -4.119761e+08 8.208582e+08 -7.117156e+08 7.457703e+08 -4.3106e+08 1.202726e+09 2.904036e+08 1.231931e+09 3.629848e+08 6.366939e+08 -4.586172e+08 -5.267629e+08 -3.507819e+08 1.679838e+09 
+  1.741141e+13 8.92488e+11 8.743834e+11 8.848896e+11 1.190313e+12 1.160279e+12 1.300066e+12 1.005678e+12 9.39335e+11 8.089614e+11 7.927041e+11 6.882427e+11 6.444235e+11 5.151451e+11 4.825723e+11 3.210106e+11 2.720254e+11 1.772539e+11 1.248102e+11 6.691599e+10 3.599804e+10 1.207574e+10 1.679301e+09 4.594778e+08 5.821614e+09 1.451758e+10 2.55803e+10 3.43277e+10 4.245286e+10 4.784859e+10 4.988591e+10 4.925451e+10 5.074584e+10 4.9557e+10 4.407876e+10 3.421443e+10 3.138606e+10 2.539716e+10 1.948134e+10 1.381167e+10 0 ]
+
+
+📄 File: online_cmvn.conf
+# configuration file for apply-cmvn-online, used in the script ../local/run_online_decoding.sh
+
+
+📄 File: splice.conf
+--left-context=3
+--right-context=3
+
+
 📁 Folder: .\backend\services
+
+📄 File: action_engine.py
+import os
+import subprocess
+import psutil
+
+def handle_action(query: str):
+    q = query.lower()
+
+    # =========================
+    # OPEN APPS
+    # =========================
+    if "open chrome" in q:
+        os.system("start chrome")
+        return "Opening Chrome"
+
+    if "open notepad" in q:
+        os.system("start notepad")
+        return "Opening Notepad"
+
+    # =========================
+    # SYSTEM INFO
+    # =========================
+    if "top processes" in q:
+        procs = []
+        for p in psutil.process_iter(['name', 'cpu_percent']):
+            try:
+                procs.append((p.info['name'], p.info['cpu_percent']))
+            except:
+                pass
+
+        procs = sorted(procs, key=lambda x: x[1], reverse=True)[:5]
+
+        return "Top processes: " + ", ".join([f"{p[0]}" for p in procs])
+
+    # =========================
+    # KILL PROCESS
+    # =========================
+    if "kill chrome" in q:
+        for p in psutil.process_iter(['name']):
+            if "chrome" in p.info['name'].lower():
+                p.terminate()
+        return "Chrome closed"
+
+    # =========================
+    # CLEAN TEMP
+    # =========================
+    if "clean temp" in q:
+        os.system("del /q/f/s %TEMP%\\*")
+        return "Temporary files cleaned"
+
+    return None
 
 📄 File: ai_service.py
 
@@ -1826,6 +2168,7 @@ import threading
 import subprocess
 import psutil
 import time
+from services.voice_service import speak 
 
 # =========================
 # LOAD MODEL
@@ -1843,6 +2186,7 @@ FEATURE_NAMES = list(scaler.feature_names_in_)
 # =========================
 # GLOBAL STATE
 # =========================
+last_attack_alert = {}
 logs = []
 blocked_ips = set()
 
@@ -1855,10 +2199,10 @@ ip_set = set()
 
 # 🔥 NEW TRACKING
 ip_request_count = {}
-ip_syn_count = {}      # ✅ SYN counter
+ip_syn_count = {}      
 ip_last_reset = {}
 
-WINDOW = 5  # seconds
+WINDOW = 5  
 
 # =========================
 # ML PREDICTION
@@ -1909,10 +2253,7 @@ def get_severity(confidence, attack_type):
         return "HIGH"
     if confidence >= 95:
         return "HIGH"
-    elif confidence >= 85:
-        return "MEDIUM"
-    else:
-  
+    elif confidence >=
 ... (truncated)
 
 
@@ -1921,6 +2262,8 @@ import threading
 from services.ai_service import groq_response, gemini_response, ollama_response
 from services.system_service import get_system_metrics
 from services.memory_service import add_chat, add_fact, get_fact
+
+from services.action_engine import handle_action
 
 
 def run_with_timeout(func, args=(), timeout=5):
@@ -1944,6 +2287,13 @@ def is_system_query(q):
 
 def jarvis_brain(query):
     q = query.lower()
+
+    # =========================
+    # ACTION ENGINE (NEW)
+    # =========================
+    action = handle_action(query)
+    if action:
+        return action
 
     # MEMORY LEARNING
     if "my name is" in q:
@@ -2002,19 +2352,11 @@ Answer naturally and briefly.
             source = "gemini"
 
     if not res:
-        res = run_with_timeout(ollama_response, (prompt,), 10)
+        res = run_with_timeout(ollama_response, (prompt,), 20)
         if res:
             source = "ollama"
 
-    # RULE FALLBACK
-    if not res:
-        m = get_system_metrics()
-        res = f"CPU {m['cpu']}%, RAM {m['ram']}%, Battery {m['battery']}%"
-        source = "rule"
-
-    print("🧠 Source:", source)
-
-    final = f
+  
 ... (truncated)
 
 
@@ -2059,6 +2401,74 @@ def get_fact(key):
         if f["key"] == key:
             return f["value"]
     return None
+
+📄 File: monitor_service.py
+import time
+from services.voice_service import speak
+from services.system_service import get_system_metrics
+from services.jarvis_brain import jarvis_brain
+
+def background_monitor():
+    print("🧠 Smart Monitor started")
+
+    last_alert = {
+        "cpu": 0,
+        "ram": 0,
+        "battery_low": 0,
+        "battery_high": 0
+    }
+
+    while True:
+        m = get_system_metrics()
+        cpu = m['cpu']
+        ram = m['ram']
+        battery = m['battery']
+
+        now = time.time()
+
+        # =========================
+        # CPU ALERT
+        # =========================
+        if cpu > 85 and now - last_alert["cpu"] > 20:
+            if cpu > 95:
+                speak(f"Critical warning! CPU usage is extremely high at {cpu} percent")
+            else:
+                speak(f"Warning! CPU usage is {cpu} percent")
+
+            # AI suggestion (short)
+            res = jarvis_brain(f"My CPU is {cpu} percent. Give 1 short tip.")
+            if res:
+                speak(res)
+
+            last_alert["cpu"] = now
+
+        # =========================
+        # RAM ALERT
+        # =========================
+        if ram > 85 and now - last_alert["ram"] > 20:
+            speak(f"Warning! RAM usage is {ram} percent")
+
+            res = jarvis_brain(f"My RAM is {ram} percent. Give 1 short tip.")
+            if res:
+                speak(res)
+
+            last_alert["ram"] = now
+
+        # =========================
+        # BATTERY LOW
+        # =========================
+        if battery < 20 and now - last_alert["battery_low"] > 60:
+            speak(f"Battery is low at {battery} percent. Please plug in charger")
+            last_alert["battery_low"] = now
+
+        # =========================
+        # BATTERY HIGH
+        # =========================
+        if battery > 80 and now - last_alert["battery_high"] > 60:
+            speak(f"Battery is {battery} percent. You can unplug the charger")
+            last_alert["battery_high"] = now
+
+        time.sleep(3)
 
 📄 File: system_service.py
 import psutil
@@ -2154,13 +2564,21 @@ import speech_recognition as sr
 import pyttsx3
 import time
 import threading
+import socket
+
 import queue
+import json
+from vosk import Model, KaldiRecognizer
 
 from services.jarvis_brain import jarvis_brain
 
 SAMPLE_RATE = 48000
 DURATION = 3
 sd.default.device = None
+
+
+engine = None
+engine_lock = threading.Lock()
 
 
 # =========================
@@ -2181,14 +2599,18 @@ def speak(text):
         print("TTS Error:", e)  
 
 
-# def release_audio():
-#     try:
-#         sd.stop()
-#     except:
-#         pass
 
 
-def listen():
+def is_internet():
+    try:
+        socket.create_connection(("8.8.8.8", 53), timeout=1)
+        return True
+    except:
+        return False
+
+
+
+def listen_online():
     try:
         # time.sleep(0.3)
         print("🎤 Listening...")
@@ -2214,23 +2636,23 @@ def listen():
         return None
 
 
-def start_jarvis():
-    print("🔥 Jarvis thread started")
-    speak("Jarvis activated and ready")
+# =========================
+# vosk model for offline listening
+# ===================================
 
-    while True:
-        text = listen()
-        if not text:
-            continue
+# =========================
+# LOAD MODEL (DO THIS ONCE)
+# =========================
+MODEL_PATH = "models/vosk-model-small-en-us-0.15"
 
-        print("👂 Heard:", text)
+model = Model(MODEL_PATH)
+recognizer = KaldiRecognizer(model, 16000)
 
-        response = jarvis_brain(text)
-        speak(response)
+q = queue.Queue()
 
-        # release_audio()    
-
-        time.sleep(1.3) 
+def audio_callback(indata, frames, time, status):
+    i
+... (truncated)
 
 
 📄 File: __init__.py
@@ -3053,6 +3475,14 @@ project_details.txt
 **/.env
 
 
+backend/build/
+dist/
+*.pkg
+*.pyz
+*.exe
+__pycache__/
+
+
 
 📄 File: package-lock.json
 {
@@ -3485,10 +3915,10 @@ function App() {
   const [page, setPage] = useState("system");
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display : "flex" }}>
       <Sidebar setPage={setPage} page={page} />
 
-      <div style={{ flex: 1, padding: "20px" }}>
+      <div style={dashboard}>
         {page === "system" && <SystemPage />}
         {page === "ai" && <AIPage />}
         {page === "ids" && <IDSPage />}
@@ -3498,7 +3928,15 @@ function App() {
   );
 }
 
+
+const dashboard  = {
+  flex: 1, 
+  padding: "0px 20px",
+  marginLeft: "15rem"
+}
+
 export default App;
+
 
 📄 File: config.js
 const BASE_URL = "http://127.0.0.1:8000";
@@ -3695,6 +4133,8 @@ export default MetricCard;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: fixed;
+  align-items: center;
 }
 
 /* 🔥 TITLE */
@@ -3747,6 +4187,16 @@ export default MetricCard;
   font-size: 1rem;
 }
 
+.sidebar-btn{
+  width: 100%;
+}
+
+.logo{
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+}
+
 📄 File: Sidebar.jsx
 import React from "react";
 import "./sidebar.css";
@@ -3755,7 +4205,8 @@ import { FaDesktop, FaShieldAlt, FaBroom, FaRobot } from "react-icons/fa";
 const Sidebar = ({ setPage, page }) => {
   return (
     <div className="sidebar">
-      <h2 className="sidebar-title">⚙️ Controls</h2>
+      <img src="logo.png" alt="logo.png" className="logo"/>
+      {/* <h2 className="sidebar-title">⚙️ Controls</h2> */}
 
       <button
         className={`sidebar-btn ${page === "system" ? "active" : ""}`}
@@ -3808,7 +4259,11 @@ const AIPage = () => {
   const [isVoiceInput, setIsVoiceInput] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [voiceText, setVoiceText] = useState("");
-  const [tempText, setTempText] = useState(""); // 🔥 new
+  const [tempText, setTempText] = useState("");
+
+  const formatText = (text) => {
+    return text.replace(/\. /g, ".\n\n").replace(/:\s/g, ":\n").trim();
+  };
 
   const chatRef = useRef();
 
@@ -3866,14 +4321,7 @@ const AIPage = () => {
       };
 
       recog.start();
-      setRecognition(recog);
-    }
-
-    // 🛑 STOP + SEND
-    else {
-      if (recognition) {
-        recognition.stop();
-      
+      setRecognition(reco
 ... (truncated)
 
 
@@ -3897,7 +4345,7 @@ const CleanerPage = () => {
     setProgress(0);
 
     const response = await fetch(
-      `http://127.0.0.1:8000/cleaner-stream?mode=${scanMode}`
+      `http://127.0.0.1:8000/cleaner-stream?mode=${scanMode}`,
     );
 
     const reader = response.body.getReader();
@@ -3937,9 +4385,7 @@ const CleanerPage = () => {
   // SELECT
   const toggleSelect = (path) => {
     setSelected((prev) =>
-      prev.includes(path)
-        ? prev.filter((p) => p !== path)
-        : [...prev, path]
+      prev.includes(path) ? prev.filter((p) => p !== path) : [...prev, path],
     );
   };
 
@@ -3957,10 +4403,10 @@ const CleanerPage = () => {
     try {
       const res = await axios.post(
         "http://127.0.0.1:8000/cleaner-delete",
-        selected
+        selected,
       );
 
-      alert(`
+      alert(`Deleted: ${re
 ... (truncated)
 
 
@@ -4103,10 +4549,10 @@ const SystemPage = () => {
   const processes = data.top_processes ?? [];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1>
+    <div style={{ padding: "0px 20px" }}>
+      {/* <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1> */}
 
-      <h2>💻 System Performance Monitor</h2>
+      <h1>💻 System Performance Monitor</h1>
 
       {/* 🔥 METRICS */}
       <div className="dashboard">
@@ -4123,7 +4569,7 @@ const SystemPage = () => {
       <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <h2>🧠 System Health Score:</h2>
         <h3>{data.health_score}/100</h3>
-        <h3>{data.health
+        <h3>
 ... (truncated)
 
 
@@ -4136,7 +4582,7 @@ const BASE_URL = "http://127.0.0.1:8000";
 const safeFetch = async (url, options = {}) => {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000); // 5 sec timeout
+    const timeout = setTimeout(() => controller.abort(), 20000); // 20 sec timeout
 
     const res = await fetch(url, {
       ...options,

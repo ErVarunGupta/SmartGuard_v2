@@ -7,44 +7,44 @@
   ],
   "chat": [
     {
-      "user": "event",
-      "jarvis": "groq: An event is a notable occurrence or happening, often scheduled or significant in some context."
+      "user": "huh",
+      "jarvis": "groq: Sure thing."
     },
     {
-      "user": "jarvis",
-      "jarvis": "groq: Hey! What can I help you with today?"
+      "user": "hello",
+      "jarvis": "groq: Hey! How can I help you today?"
     },
     {
-      "user": "hello jarvis",
-      "jarvis": "groq: Hello! How can I help you today?"
+      "user": "what can i do",
+      "jarvis": "groq: Sure! Ask me anything\u2014whether it\u2019s a quick fact, help with a task, or just a chat. I\u2019m here to make things easier."
     },
     {
-      "user": "what is my battery percentage",
-      "jarvis": "groq: Your battery is at 21%."
+      "user": "opened up grow",
+      "jarvis": "groq: Could you clarify what you mean by \u201copened up grow\u201d?"
     },
     {
-      "user": "hello galleries",
-      "jarvis": "rule: CPU 13.8%, RAM 78.9%, Battery 20%"
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
     },
     {
-      "user": "hello jerry reese",
-      "jarvis": "rule: CPU 19.8%, RAM 78.9%, Battery 19%"
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
     },
     {
-      "user": "had i got a result",
-      "jarvis": "groq: Could you clarify which result you\u2019re referring to?"
+      "user": "huh",
+      "jarvis": "groq: What\u2019s up?"
     },
     {
-      "user": "hello database",
-      "jarvis": "ollama: Hello! How can I help you with the database today?"
+      "user": "hello",
+      "jarvis": "groq: Hey there! How can I help you today?"
     },
     {
-      "user": "tell me about my system",
-      "jarvis": "ollama: Your system currently has a CPU usage of 7.6%, RAM usage of 81.5%, and battery level at 22%. This means your device is not under heavy load, but the battery may be running low."
+      "user": "oh",
+      "jarvis": "groq: Gotcha."
     },
     {
-      "user": "tell about my system",
-      "jarvis": "ollama: Your system currently has a CPU usage of 7.8%, RAM usage of 82.6%, and the battery level is at 22%. This suggests that your system is relatively idle, with some applications or processes running but not heavily consuming resources. The battery level means it's advisable to plug in your device soon if you plan to continue using it extensively."
+      "user": "open d chrome",
+      "jarvis": "groq: Opening Chrome now."
     }
   ]
 }

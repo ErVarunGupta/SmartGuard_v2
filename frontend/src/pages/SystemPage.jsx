@@ -50,7 +50,7 @@ const SystemPage = () => {
   const processes = data.top_processes ?? [];
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "0px 20px" }}>
       {/* <h1>🚀 Smart Laptop Analyzer + Cyber Guard</h1> */}
 
       <h1>💻 System Performance Monitor</h1>

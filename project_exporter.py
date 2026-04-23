@@ -4,7 +4,7 @@ OUTPUT_FILE = "project_details.txt"
 ROOT_DIR = "."  # current project folder
 
 EXCLUDE_FOLDERS = ["venv", "__pycache__", "node_modules", ".git"]
-EXCLUDE_EXT = [".png", ".jpg", ".jpeg", ".gif", ".exe", ".dll"]
+EXCLUDE_EXT = [".png", ".jpg", ".jpeg", ".gif", ".exe", ".dll", ".env"]
 
 
 def is_excluded(path):

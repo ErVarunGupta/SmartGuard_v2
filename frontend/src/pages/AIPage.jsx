@@ -280,6 +280,12 @@ const AIPage = () => {
         <input
           value={listening ? voiceText + tempText : input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !thinking) {
+              e.preventDefault();
+              handleSend(false);
+            }
+          }}
           placeholder="Message Smart AI..."
           style={{
             flex: 1,

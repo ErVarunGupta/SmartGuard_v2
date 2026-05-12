@@ -7,44 +7,44 @@
   ],
   "chat": [
     {
-      "user": "huh",
-      "jarvis": "groq: Sure thing."
+      "user": "My RAM is 91.3 percent. Give 1 short tip.",
+      "jarvis": "groq: Try closing any unused tabs or background apps to free up memory."
     },
     {
-      "user": "hello",
-      "jarvis": "groq: Hey! How can I help you today?"
+      "user": "My RAM is 91.3 percent. Give 1 short tip.",
+      "jarvis": "groq: Close unused apps or tabs to free up memory."
     },
     {
-      "user": "what can i do",
-      "jarvis": "groq: Sure! Ask me anything\u2014whether it\u2019s a quick fact, help with a task, or just a chat. I\u2019m here to make things easier."
+      "user": "My RAM is 91.3 percent. Give 1 short tip.",
+      "jarvis": "groq: Close unused apps or tabs to free up memory."
     },
     {
-      "user": "opened up grow",
-      "jarvis": "groq: Could you clarify what you mean by \u201copened up grow\u201d?"
+      "user": "My RAM is 90.9 percent. Give 1 short tip.",
+      "jarvis": "groq: Close background apps or clear cache to free up memory."
     },
     {
-      "user": "huh",
-      "jarvis": "groq: What\u2019s up?"
+      "user": "My RAM is 90.7 percent. Give 1 short tip.",
+      "jarvis": "groq: Try closing any unused apps or browser tabs to free up memory."
     },
     {
-      "user": "huh",
-      "jarvis": "groq: What\u2019s up?"
+      "user": "My RAM is 90.5 percent. Give 1 short tip.",
+      "jarvis": "groq: Try closing unused tabs or apps to free up memory."
     },
     {
-      "user": "huh",
-      "jarvis": "groq: What\u2019s up?"
+      "user": "My RAM is 90.3 percent. Give 1 short tip.",
+      "jarvis": "groq: Close any unused apps or browser tabs to free up RAM."
     },
     {
-      "user": "hello",
-      "jarvis": "groq: Hey there! How can I help you today?"
+      "user": "My RAM is 89.7 percent. Give 1 short tip.",
+      "jarvis": "groq: Close unused tabs or apps to free up memory."
     },
     {
-      "user": "oh",
-      "jarvis": "groq: Gotcha."
+      "user": "My RAM is 89.1 percent. Give 1 short tip.",
+      "jarvis": "groq: Close any unused apps or browser tabs to free up memory."
     },
     {
-      "user": "open d chrome",
-      "jarvis": "groq: Opening Chrome now."
+      "user": "My RAM is 90.7 percent. Give 1 short tip.",
+      "jarvis": "groq: Close any unused apps or restart to free up memory."
     }
   ]
 }

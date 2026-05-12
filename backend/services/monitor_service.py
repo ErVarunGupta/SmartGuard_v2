@@ -24,7 +24,7 @@ def background_monitor():
         # =========================
         # CPU ALERT
         # =========================
-        if cpu > 85 and now - last_alert["cpu"] > 20:
+        if cpu > 90 and now - last_alert["cpu"] > 20:
             if cpu > 95:
                 speak(f"Critical warning! CPU usage is extremely high at {cpu} percent")
             else:
@@ -40,7 +40,7 @@ def background_monitor():
         # =========================
         # RAM ALERT
         # =========================
-        if ram > 85 and now - last_alert["ram"] > 20:
+        if ram > 90 and now - last_alert["ram"] > 20:
             speak(f"Warning! RAM usage is {ram} percent")
 
             res = jarvis_brain(f"My RAM is {ram} percent. Give 1 short tip.")

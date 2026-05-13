@@ -6,6 +6,7 @@ import subprocess
 import psutil
 import time
 from services.voice_service import speak 
+from services.runtime_state import runtime_state
 
 # =========================
 # LOAD MODEL
@@ -196,6 +197,26 @@ def process_packet(packet):
         current_time = time.time()
         if final_attack:
             block_ip(ip)
+
+            # =========================
+            # UPDATE LIVE STATE
+            # =========================
+
+            runtime_state["blocked_ips"] = len(blocked_ips)
+
+            runtime_state["threats_detected"] += 1
+
+            runtime_state["threat_level"] = severity
+
+            runtime_state["logs"].insert(0, {
+                "ip": ip,
+                "attack_type": attack_type,
+                "severity": severity,
+                "time": time.strftime("%H:%M:%S")
+            })
+
+            # keep latest 20 logs only
+            runtime_state["logs"] = runtime_state["logs"][:20]
 
             # prevent spam (per IP)
             if ip not in last_attack_alert or current_time - last_attack_alert[ip] > 20:

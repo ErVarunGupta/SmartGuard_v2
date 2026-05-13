@@ -7,44 +7,214 @@
   ],
   "chat": [
     {
-      "user": "My RAM is 91.3 percent. Give 1 short tip.",
-      "jarvis": "groq: Try closing any unused tabs or background apps to free up memory."
+      "user": "tell me about my system",
+      "jarvis": "groq: Your system is running at 24.2\u202f% CPU, 78.8\u202f% RAM usage, and the battery is at 46\u202f%."
     },
     {
-      "user": "My RAM is 91.3 percent. Give 1 short tip.",
-      "jarvis": "groq: Close unused apps or tabs to free up memory."
+      "user": "is my system stable or not?",
+      "jarvis": "groq: Your system looks fine\u2014CPU is low, RAM is under 80%, and the battery is at 45\u202f%. No immediate red flags, just keep an eye on battery life."
     },
     {
-      "user": "My RAM is 91.3 percent. Give 1 short tip.",
-      "jarvis": "groq: Close unused apps or tabs to free up memory."
+      "user": "what about my system performance?",
+      "jarvis": "groq: CPU\u2019s running at 17.6\u202f% \u2013 fine.  \nRAM\u2019s at 78.5\u202f% \u2013 a bit high but still within normal range.  \nBattery\u2019s at 45\u202f% \u2013 you\u2019re halfway down. No immediate concerns."
     },
     {
-      "user": "My RAM is 90.9 percent. Give 1 short tip.",
-      "jarvis": "groq: Close background apps or clear cache to free up memory."
+      "user": "what about my system",
+      "jarvis": "groq: CPU\u2019s running at 25\u202f% \u2013 fine.  \nRAM\u2019s about 79\u202f% used \u2013 a bit high, consider closing unused apps.  \nBattery\u2019s at 38\u202f% \u2013 you have a little over a third left."
     },
     {
-      "user": "My RAM is 90.7 percent. Give 1 short tip.",
-      "jarvis": "groq: Try closing any unused apps or browser tabs to free up memory."
+      "user": "what are you doing",
+      "jarvis": "groq: Just hanging out, ready to help with whatever you need."
     },
     {
-      "user": "My RAM is 90.5 percent. Give 1 short tip.",
-      "jarvis": "groq: Try closing unused tabs or apps to free up memory."
+      "user": "hi",
+      "jarvis": "groq: Hey there! What can I help you with today?"
     },
     {
-      "user": "My RAM is 90.3 percent. Give 1 short tip.",
-      "jarvis": "groq: Close any unused apps or browser tabs to free up RAM."
+      "user": "hello",
+      "jarvis": "groq: Hey there! How can I help you today?"
     },
     {
-      "user": "My RAM is 89.7 percent. Give 1 short tip.",
-      "jarvis": "groq: Close unused tabs or apps to free up memory."
+      "user": "hello",
+      "jarvis": "groq: Hello! How can I help you today?"
     },
     {
-      "user": "My RAM is 89.1 percent. Give 1 short tip.",
-      "jarvis": "groq: Close any unused apps or browser tabs to free up memory."
+      "user": "hello",
+      "jarvis": "Hello!"
     },
     {
-      "user": "My RAM is 90.7 percent. Give 1 short tip.",
-      "jarvis": "groq: Close any unused apps or restart to free up memory."
+      "user": "what r u doing",
+      "jarvis": "Just hanging out\u2014ready to help you with whatever you need!"
+    }
+  ],
+  "chat_sessions": [
+    {
+      "id": "7466e39c-35e8-4fb1-b62a-a18dab44737d",
+      "title": "Hello",
+      "messages": [
+        {
+          "role": "user",
+          "text": "hello",
+          "time": "12:58 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Hey! How can I help you today?",
+          "time": "12:58 AM"
+        },
+        {
+          "role": "user",
+          "text": "what about my system?",
+          "time": "12:58 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Your system looks healthy: CPU is under 20\u202f%, RAM around 79\u202f% (not a bottleneck), battery at 76\u202f% and disk usage just 34\u202f%. All good!",
+          "time": "12:58 AM"
+        },
+        {
+          "role": "user",
+          "text": "huh",
+          "time": "01:04 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Got it. How can I help?",
+          "time": "01:04 AM"
+        },
+        {
+          "role": "user",
+          "text": "tell me about my system",
+          "time": "01:14 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Your system is running smoothly. CPU is at 12.8\u202f% \u2013 plenty of headroom. RAM usage is 76\u202f%, so you\u2019re using most of your memory but still have some free space. Battery is at 65\u202f%, so you\u2019re well\u2011powered for a few more hours. Disk usage is only 33.7\u202f%, leaving plenty of space for files and programs. No immediate action needed.",
+          "time": "01:14 AM"
+        }
+      ],
+      "created_at": "12:58 AM"
+    },
+    {
+      "id": "4662f971-342a-4df7-8059-4131a4ee89b2",
+      "title": "Oh Mean",
+      "messages": [
+        {
+          "role": "user",
+          "text": "oh mean",
+          "time": "01:25 AM"
+        },
+        {
+          "role": "ai",
+          "text": "I\u2019m sorry to hear that.",
+          "time": "01:25 AM"
+        }
+      ],
+      "created_at": "01:25 AM"
+    },
+    {
+      "id": "88984f26-7683-4232-98b3-935768a97eff",
+      "title": "My Ram Is",
+      "messages": [
+        {
+          "role": "user",
+          "text": "My RAM is 91.1 percent. Give 1 short tip.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Try closing any unused apps or restarting your computer to free up RAM.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "user",
+          "text": "My RAM is 96.4 percent. Give 1 short tip.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Try closing unused apps or restarting your computer to free up memory.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "user",
+          "text": "My RAM is 94.0 percent. Give 1 short tip.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Close any unused apps or restart your computer to free up RAM.",
+          "time": "07:28 AM"
+        },
+        {
+          "role": "user",
+          "text": "My RAM is 92.4 percent. Give 1 short tip.",
+          "time": "07:29 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Close any unused apps or browser tabs to free up memory.",
+          "time": "07:29 AM"
+        },
+        {
+          "role": "user",
+          "text": "hello omni",
+          "time": "07:42 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Hi there! How can I help you today?",
+          "time": "07:42 AM"
+        },
+        {
+          "role": "user",
+          "text": "what are you doing",
+          "time": "07:43 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Just here, ready to help. What can I do for you?",
+          "time": "07:43 AM"
+        },
+        {
+          "role": "user",
+          "text": "well i don't well feminism jets good yeah let's make this a go guy walking massive was kind of nuts such me guys what are your barrel",
+          "time": "07:53 AM"
+        },
+        {
+          "role": "ai",
+          "text": "I\u2019m not sure I caught that. Could you clarify what you\u2019re looking for?",
+          "time": "07:53 AM"
+        }
+      ],
+      "created_at": "07:28 AM"
+    },
+    {
+      "id": "339c91d0-d890-426b-9f56-c2e8ba925186",
+      "title": "Hello Money",
+      "messages": [
+        {
+          "role": "user",
+          "text": "hello money",
+          "time": "08:17 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Hey there! How can I help you with money today?",
+          "time": "08:17 AM"
+        },
+        {
+          "role": "user",
+          "text": "what is my system status?",
+          "time": "08:18 AM"
+        },
+        {
+          "role": "ai",
+          "text": "Your system is running smoothly:  \n- CPU: 18.2%  \n- RAM: 70.5%  \n- Battery: 81%  \n- Disk: 33.8%  \n\nAll metrics are within normal ranges.",
+          "time": "08:18 AM"
+        }
+      ],
+      "created_at": "08:17 AM"
     }
   ]
 }

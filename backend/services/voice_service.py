@@ -11,6 +11,7 @@ import json
 from vosk import Model, KaldiRecognizer
 
 from services.jarvis_brain import jarvis_brain
+from services.runtime_state import runtime_state
 
 
 # =========================
@@ -47,13 +48,19 @@ def audio_callback(indata, frames, time, status):
 # SPEAK FUNCTION
 # =========================
 def speak(text):
+    if runtime_state["mute"]:
+        return
+
+    if not runtime_state["speak"]:
+        return
     global is_speaking
     is_speaking = True
 
     clean = text.replace("groq:", "").replace("gemini:", "").replace("ollama:", "").replace("rule:", "")
-    print("Jarvis:", clean)
+    print("Omni:", clean)
 
     try:
+        runtime_state["speak"] = True
         engine = pyttsx3.init()
         engine.setProperty('rate', 170)
         engine.say(clean)
@@ -63,6 +70,7 @@ def speak(text):
         print("TTS Error:", e)
     finally:
         is_speaking = False
+        runtime_state["speak"] = False
 
 
 # =========================
@@ -70,6 +78,7 @@ def speak(text):
 # =========================
 def is_internet():
     try:
+        
         socket.create_connection(("8.8.8.8", 53), timeout=1)
         return True
     except:
@@ -82,6 +91,7 @@ def is_internet():
 def listen_online():
     try:
         print("🎤 Listening (online)...")
+        runtime_state["online_mode"] = is_internet()
 
         rec = sd.rec(int(DURATION * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1, dtype='int16')
         sd.wait()
@@ -121,6 +131,20 @@ def listen_offline():
         callback=audio_callback
     ):
         while True:
+            if runtime_state["mute"]:
+                runtime_state["ai_state"] = "Muted"
+                time.sleep(1)
+                continue
+
+            if not runtime_state["wake_word"]:
+                runtime_state["ai_state"] = "Wake Word Disabled"
+                time.sleep(1)
+                continue
+
+            if not runtime_state["mic"]:
+                runtime_state["ai_state"] = "Mic Off"
+                time.sleep(1)
+                continue
             data = q.get()
 
             if recognizer_local.AcceptWaveform(data):
@@ -136,6 +160,11 @@ def listen_offline():
 # HYBRID LISTEN
 # =========================
 def listen():
+    if runtime_state["mute"]:
+        return None
+
+    if not runtime_state["mic"]:
+        return None
     if is_internet():
         text = listen_online()
 
@@ -151,18 +180,32 @@ def listen():
 # =========================
 # WAKE WORD LISTENER
 # =========================
-WAKE_WORDS = ["jarvis", "jarviss", "jarves", "service", "travis"]
+WAKE_WORDS = ["omni", "omny", "only", "army", "omini", "mini"]
 
 def wait_for_wake_word():
-    print("👂 Waiting for wake word: 'jarvis'...")
+    print("👂 Waiting for wake word: 'omni'...")
 
-    WAKE_WORDS = ["jarvis", "janice", "service", "travis"]
+    WAKE_WORDS = ["omni", "omny", "only", "army", "mini", "omini"]
 
     # 🌐 ONLINE MODE (Google)
     if is_internet():
         print("🌐 Wake word via Google")
 
         while True:
+            if runtime_state["mute"]:
+                runtime_state["ai_state"] = "Muted"
+                time.sleep(1)
+                continue
+
+            if not runtime_state["wake_word"]:
+                runtime_state["ai_state"] = "Wake Word Disabled"
+                time.sleep(1)
+                continue
+
+            if not runtime_state["mic"]:
+                runtime_state["ai_state"] = "Mic Off"
+                time.sleep(1)
+                continue
             if is_speaking:
                 continue
 
@@ -212,12 +255,15 @@ def wait_for_wake_word():
 # MAIN LOOP
 # =========================
 def start_jarvis():
-    print("🔥 Jarvis started")
-    speak("Jarvis activated and ready")
+    print("🔥 Omni started")
+    speak("Omni activated and ready")
+    runtime_state["mic"] = True
 
     while True:
         # 💤 WAIT FOR WAKE WORD
         wait_for_wake_word()
+
+        runtime_state["ai_state"] = "Listening"
 
         # 🎤 LISTEN COMMAND
         text = listen()
@@ -227,11 +273,22 @@ def start_jarvis():
 
         print("👂 Command:", text)
 
+        runtime_state["ai_state"] = "Processing"
+
         # 🧠 PROCESS
         response = jarvis_brain(text)
 
+        runtime_state["ai_state"] = "Speaking"
+
         # 🔊 SPEAK
         speak(response)
+
+        runtime_state["ai_state"] = "Idle"
+
+        if runtime_state["mute"]:
+            runtime_state["ai_state"] = "Muted"
+            time.sleep(1)
+            continue
 
         # 💤 BACK TO SLEEP
         time.sleep(1)

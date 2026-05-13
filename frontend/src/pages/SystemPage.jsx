@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getMetrics } from "../services/api";
-import MetricCard from "../components/MetricCard";
+import MetricCard from "../components/common/MetricCard";
 import { killProcess } from "../services/api";
 
 const SystemPage = () => {

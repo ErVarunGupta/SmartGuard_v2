@@ -6,6 +6,7 @@ import pandas as pd
 import threading
 from core.health import calculate_health_score
 import winsound
+from services.runtime_state import runtime_state
 
 # =========================
 # PATH
@@ -145,6 +146,38 @@ def background_worker():
 
             if not recommendation:
                 recommendation.append("System is stable")
+
+
+            
+            # updated
+            # =========================
+            # UPDATE CLEANER DATA
+            # =========================
+
+            runtime_state["cleaner"] = {
+
+                "junk_files": f"{round(disk * 0.15, 1)} GB",
+
+                "cache_files": f"{round(ram * 0.08, 1)} GB",
+
+                "temp_files": f"{round(cpu * 0.03, 1)} GB",
+
+                "cleaned": "0 GB"
+            }
+
+            # =========================
+            # UPDATE SECURITY DATA
+            # =========================
+
+            runtime_state["threat_level"] = state
+
+            runtime_state["threats_detected"] = (
+                1 if state == "CRITICAL" else 0
+            )
+
+            runtime_state["blocked_ips"] = (
+                2 if state == "CRITICAL" else 0
+            )
 
             # =========================
             # FINAL CACHE DATA

@@ -20,6 +20,10 @@ from services.cleaner_engine import (
 )
 from services.voice_service import start_jarvis
 from services.monitor_service import background_monitor
+from services.dashboard_service import get_dashboard_data
+from services.runtime_state import runtime_state
+import time
+from routes.chat_routes import router as chat_router
 
 app = FastAPI()
 
@@ -217,6 +221,100 @@ def open_file(path: str):
     except Exception as e:
         return {"error": str(e)}
 
+
+
+
+
+
+@app.get("/api/dashboard")
+def dashboard_data():
+    return get_dashboard_data()
+
+
+from services.runtime_state import runtime_state
+
+# =========================
+# UPDATE VOICE SETTINGS
+# =========================
+
+@app.post("/api/voice/toggle")
+def toggle_voice(data: dict = Body(...)):
+
+    setting = data.get("setting")
+
+    if setting not in runtime_state:
+        return {
+            "success": False,
+            "message": "Invalid setting"
+        }
+
+    runtime_state[setting] = not runtime_state[setting]
+
+    return {
+        "success": True,
+        "voice": {
+            "mute": runtime_state["mute"],
+            "mic": runtime_state["mic"],
+            "speak": runtime_state["speak"],
+            "wake_word": runtime_state["wake_word"],
+            "online_mode": runtime_state["online_mode"],
+        }
+    }
+
+
+# =========================
+# RUN SMART CLEANER
+# =========================
+
+@app.post("/api/cleaner/run")
+def run_cleaner():
+
+    # =========================
+    # SIMULATE CLEANING
+    # =========================
+
+    cleaned_size = "3.2 GB"
+
+    runtime_state["cleaner"] = {
+
+        "junk_files": "0.2 GB",
+
+        "cache_files": "0.1 GB",
+
+        "temp_files": "0.1 GB",
+
+        "cleaned": cleaned_size,
+    }
+
+    # =========================
+    # ADD NOTIFICATION
+    # =========================
+
+    runtime_state["logs"].insert(0, {
+        "type": "cleaner",
+        "message": f"{cleaned_size} junk cleaned",
+        "time": time.strftime("%I:%M %p")
+    })
+
+    return {
+        "success": True,
+        "message": "System cleaned successfully",
+        "cleaner": runtime_state["cleaner"]
+    }
+
+@app.get("/voice-status")
+def voice_status():
+
+    return {
+        "mute": runtime_state["mute"],
+        "mic": runtime_state["mic"],
+        "speak": runtime_state["speak"],
+        "wake_word": runtime_state["wake_word"],
+        "online_mode": runtime_state["online_mode"],
+        "ai_state": runtime_state["ai_state"]
+    }
+
+app.include_router(chat_router)
 # =========================
 # RUN SERVER
 # =========================

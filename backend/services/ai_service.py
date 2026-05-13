@@ -1,22 +1,39 @@
-
-
 import os
+import time
 import requests
+
 from dotenv import load_dotenv
 from openai import OpenAI
 import google.generativeai as genai
 
+from services.runtime_state import runtime_state
+
 load_dotenv()
 
-# GROQ
+# =========================
+# GROQ CLIENT
+# =========================
+
 client = OpenAI(
     api_key=os.getenv("GROQ_API_KEY"),
     base_url="https://api.groq.com/openai/v1",
 )
 
-# GEMINI
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-gemini_model = genai.GenerativeModel("gemini-3-flash-preview")
+# =========================
+# GEMINI CLIENT
+# =========================
+
+genai.configure(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+
+gemini_model = genai.GenerativeModel(
+    "gemini-2.5-flash"
+)
+
+# =========================
+# BASE PROMPT
+# =========================
 
 BASE_PROMPT = """
 You are Jarvis, a smart AI assistant.
@@ -28,51 +45,197 @@ Rules:
 """
 
 # =========================
-# GROQ
+# GROQ RESPONSE
 # =========================
+
 def groq_response(query):
+
     try:
+
+        # =========================
+        # UPDATE RUNTIME STATE
+        # =========================
+
+        runtime_state["ai_model"] = "Groq"
+        runtime_state["ai_mode"] = "Online"
+        runtime_state["ai_state"] = "Processing"
+
+        start = time.time()
+
+        # =========================
+        # API CALL
+        # =========================
+
         res = client.chat.completions.create(
+
             model="openai/gpt-oss-20b",
+
             messages=[
-                {"role": "system", "content": BASE_PROMPT},
-                {"role": "user", "content": query}
+
+                {
+                    "role": "system",
+                    "content": BASE_PROMPT
+                },
+
+                {
+                    "role": "user",
+                    "content": query
+                }
+
             ],
+
             temperature=0.6
+
         )
-        return res.choices[0].message.content.strip()
+
+        end = time.time()
+
+        # =========================
+        # UPDATE LATENCY
+        # =========================
+
+        runtime_state["latency"] = (
+            f"{round(end - start, 2)}s"
+        )
+
+        runtime_state["ai_state"] = "Idle"
+
+        return (
+            res.choices[0]
+            .message.content
+            .strip()
+        )
+
     except Exception as e:
+
         print("❌ Groq Error:", e)
+
+        runtime_state["ai_state"] = "Error"
+
         return None
 
 
 # =========================
-# GEMINI
+# GEMINI RESPONSE
 # =========================
+
 def gemini_response(query):
+
     try:
-        res = gemini_model.generate_content(f"{BASE_PROMPT}\nUser: {query}")
-        return res.text.strip() if res and hasattr(res, "text") else None
+
+        # =========================
+        # UPDATE RUNTIME STATE
+        # =========================
+
+        runtime_state["ai_model"] = "Gemini"
+
+        runtime_state["ai_mode"] = "Online"
+
+        runtime_state["ai_state"] = "Processing"
+
+        start = time.time()
+
+        # =========================
+        # GEMINI CALL
+        # =========================
+
+        res = gemini_model.generate_content(
+            f"{BASE_PROMPT}\nUser: {query}"
+        )
+
+        end = time.time()
+
+        # =========================
+        # UPDATE LATENCY
+        # =========================
+
+        runtime_state["latency"] = (
+            f"{round(end - start, 2)}s"
+        )
+
+        runtime_state["ai_state"] = "Idle"
+
+        if res and hasattr(res, "text"):
+
+            return res.text.strip()
+
+        return None
+
     except Exception as e:
+
         print("❌ Gemini Error:", e)
+
+        runtime_state["ai_state"] = "Error"
+
         return None
 
 
 # =========================
-# OLLAMA
+# OLLAMA RESPONSE
 # =========================
+
 def ollama_response(query):
+
     try:
+
+        # =========================
+        # UPDATE RUNTIME STATE
+        # =========================
+
+        runtime_state["ai_model"] = "Ollama"
+
+        runtime_state["ai_mode"] = "Offline"
+
+        runtime_state["ai_state"] = "Processing"
+
+        start = time.time()
+
+        # =========================
+        # OLLAMA API
+        # =========================
+
         res = requests.post(
+
             "http://localhost:11434/api/generate",
+
             json={
+
                 "model": "mistral",
-                "prompt": f"{BASE_PROMPT}\nUser: {query}",
+
+                "prompt": (
+                    f"{BASE_PROMPT}\nUser: {query}"
+                ),
+
                 "stream": False
+
             },
-            timeout=10
+
+            timeout=20
+
         )
-        return res.json().get("response", "").strip()
+
+        end = time.time()
+
+        # =========================
+        # UPDATE LATENCY
+        # =========================
+
+        runtime_state["latency"] = (
+            f"{round(end - start, 2)}s"
+        )
+
+        runtime_state["ai_state"] = "Idle"
+
+        return (
+            res.json()
+            .get("response", "")
+            .strip()
+        )
+
     except Exception as e:
+
         print("❌ Ollama Error:", e)
+
+        runtime_state["ai_state"] = "Error"
+
         return None

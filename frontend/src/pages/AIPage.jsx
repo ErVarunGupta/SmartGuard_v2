@@ -1,4 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { useParams } from "react-router-dom";
+
+import axios from "axios";
 import { sendMessage } from "../services/api";
 
 const AIPage = () => {
@@ -11,11 +15,36 @@ const AIPage = () => {
   const [voiceText, setVoiceText] = useState("");
   const [tempText, setTempText] = useState("");
 
+  const { chatId } = useParams();
+
+  useEffect(() => {
+    loadChat();
+  }, [chatId]);
+
+  const loadChat = async () => {
+    try {
+      const res = await axios.get(`http://127.0.0.1:8000/chat/${chatId}`);
+
+      if (res.data.messages) {
+        setMessages(res.data.messages);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const formatText = (text) => {
     return text.replace(/\. /g, ".\n\n").replace(/:\s/g, ":\n").trim();
   };
 
   const chatRef = useRef();
+
+  const getCurrentTime = () => {
+    return new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   // 🔽 Auto scroll
   useEffect(() => {
@@ -115,7 +144,16 @@ const AIPage = () => {
     let current = "";
 
     // add empty AI message first
-    setMessages((prev) => [...prev, { role: "ai", text: "", typing: true }]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "ai",
+        sender: "OmniGuard AI",
+        text: "",
+        typing: true,
+        time: getCurrentTime(),
+      },
+    ]);
 
     for (let i = 0; i < formatted.length; i++) {
       current += formatted[i];
@@ -124,8 +162,9 @@ const AIPage = () => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           role: "ai",
-          text: current + "▌", // blinking cursor feel
-          typing: true,
+          sender: "OmniGuard AI",
+          text: current,
+          time: getCurrentTime(),
         };
         return updated;
       });
@@ -150,7 +189,12 @@ const AIPage = () => {
 
     if (!messageText.trim()) return;
 
-    const userMsg = { role: "user", text: messageText };
+    const userMsg = {
+      role: "user",
+      sender: "User",
+      text: messageText,
+      time: getCurrentTime(),
+    };
     setMessages((prev) => [...prev, userMsg]);
 
     setThinking(true);
@@ -226,35 +270,87 @@ const AIPage = () => {
               style={{
                 display: "flex",
                 justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-                marginBottom: "14px",
+                marginBottom: "18px",
               }}
             >
               <div
                 style={{
                   maxWidth: "60%",
-                  padding: "14px 18px",
+                  minWidth: "220px",
+                  padding: "14px 16px",
                   borderRadius: "18px",
+
                   background:
                     msg.role === "user"
                       ? "linear-gradient(135deg, #2563eb, #1d4ed8)"
                       : "#0f172a",
+
                   border: msg.role === "ai" ? "1px solid #1e293b" : "none",
+
                   color: "white",
-                  fontSize: "18px",
-                  lineHeight: "2",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
+
+                  position: "relative",
                 }}
               >
-                {msg.text.split("\n").map((line, index) => {
-                  if (line.toLowerCase().includes("problem"))
-                    return <b key={index}>🚨 {line}</b>;
-                  if (line.toLowerCase().includes("analysis"))
-                    return <b key={index}>📊 {line}</b>;
-                  if (line.toLowerCase().includes("solution"))
-                    return <b key={index}>🛠️ {line}</b>;
+                {/* TOP LEFT SENDER */}
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: msg.role === "user" ? "#dbeafe" : "#cbd5e1",
 
-                  return <div key={index}>{line}</div>;
-                })}
+                    marginBottom: "12px",
+
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+
+                    fontWeight: "500",
+                    opacity: "0.8",
+                  }}
+                >
+                  {msg.role === "user" ? "👤 User" : "🤖 OmniGuard AI"}
+                </div>
+
+                {/* MESSAGE */}
+                <div
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "1.7",
+                    wordBreak: "break-word",
+                    paddingBottom: "20px",
+                  }}
+                >
+                  {msg.text.split("\n").map((line, index) => {
+                    if (line.toLowerCase().includes("problem"))
+                      return <b key={index}>🚨 {line}</b>;
+
+                    if (line.toLowerCase().includes("analysis"))
+                      return <b key={index}>📊 {line}</b>;
+
+                    if (line.toLowerCase().includes("solution"))
+                      return <b key={index}>🛠️ {line}</b>;
+
+                    return <div key={index}>{line}</div>;
+                  })}
+                </div>
+
+                {/* BOTTOM RIGHT TIME */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    right: "14px",
+
+                    fontSize: "11px",
+                    opacity: "0.8",
+
+                    color: msg.role === "user" ? "#dbeafe" : "#94a3b8",
+                  }}
+                >
+                  {msg.time}
+                </div>
               </div>
             </div>
           ))
@@ -262,10 +358,33 @@ const AIPage = () => {
 
         {/* 🤖 Thinking */}
         {thinking && (
-          <div style={{ color: "#9ca3af", marginTop: "10px" }}>
+          <div
+            style={{
+              color: "#9ca3af",
+              marginTop: "10px",
+              fontSize: "15px",
+            }}
+          >
             🤖 AI is thinking...
           </div>
         )}
+
+        {/* ANIMATION */}
+        <style>
+          {`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+
+            to {
+              opacity: 1;
+              transform: translateY(0px);
+            }
+          }
+        `}
+        </style>
       </div>
 
       {/* INPUT AREA */}
